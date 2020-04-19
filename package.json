@@ -1,6 +1,6 @@
 {
   "name": "@ygyg/react-authwrapper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "react auth wrapper",
   "main": "lib/index.js",
   "files": [
@@ -28,6 +28,7 @@
   "author": "roy",
   "license": "MIT",
   "dependencies": {
+    "classnames": "^2.2.6",
     "prop-types": "^15.6.0",
     "react": "^16.1.1",
     "react-dom": "^16.1.1"

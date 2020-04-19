@@ -1,7 +1,5 @@
 import React from 'react';
-import AuthWrapper from './AuthWrapperhWrapper';
+import AuthWrapper from './PermissionWrapper';
 
 export default AuthWrapper;
-export {
-  AuthWrapper,
-};
+

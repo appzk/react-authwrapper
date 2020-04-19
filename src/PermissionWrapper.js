@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import permissionImg from '@/assets/no-permission.svg';
+import permissionImg from './PermissionSvg';
 
 const __rest = (this && this.__rest) || function (s, e) {
   const t = {};
@@ -15,20 +15,20 @@ const __rest = (this && this.__rest) || function (s, e) {
   }
   return t;
 };
-// ComposedComponent, operCodes = [], path = ''
+// ComposedComponent, codes = [], path = ''
 // 权限控制 AuthWrapper 可供任意组件权限控制
 // 无权限处理 隐藏 or forbiden or onclick func
 /**
- * <AuthWrapper user={this.props.user} className="yg-auth-inline" opercode="OPER5196613174" image={false}>
+ * <AuthWrapper codes={["1234"]} className="yg-auth-inline" code="OPER5196613174" image={false}>
       <Button specialCode="1" className={`yg-btn-link ${styles.color_FF691}`} rel="noopener noreferrer">
         同意出席
       </Button>
     </AuthWrapper>
  */
-class AuthWrapper extends Component {
+class PermissionWrapper extends Component {
 
   static propTypes = {
-    opercode: PropTypes.string.isRequired, // 按钮级的权限webKey
+    code: PropTypes.string, // 按钮级的权限webKey
     children: PropTypes.node.isRequired,
     image: PropTypes.oneOfType([
       PropTypes.string,
@@ -41,8 +41,10 @@ class AuthWrapper extends Component {
     ]),
     className: PropTypes.string,
     prefixCls: PropTypes.string,
-    validAuth: PropTypes.func,
-
+    valid: PropTypes.func,
+    codes: PropTypes.oneOfType([
+      PropTypes.array,
+    ]),
   };
 
   static defaultProps = {
@@ -50,15 +52,18 @@ class AuthWrapper extends Component {
     image: false,
     className: '',
     prefixCls: 'yg-auth',
-    validAuth: null,
+    valid: null,
+    code: '',
+    codes: [],
   };
 
   validAuth() {
-    const { validAuth, user: { userAllAuthRoleList }, opercode } = this.props;
-    if (validAuth) {return validAuth();}
-    const operCodes = userAllAuthRoleList.operCode || []; // operCode 数据源返回
+    // user: { userAllAuthRoleList }
+    const { valid, codes, code } = this.props;
+    if (valid) {return valid();}
+    // const codes = codes;// userAllAuthRoleList.code || []; // code 数据源返回
 
-    const hasAuth = !!opercode && opercode.length > 0 ? operCodes.includes(opercode) : true;
+    const hasAuth = !!code && code.length > 0 ? codes.includes(code) : true;
     return hasAuth;
   }
 
@@ -100,4 +105,4 @@ class AuthWrapper extends Component {
   }
 }
 
-export default AuthWrapper;
+export default PermissionWrapper;

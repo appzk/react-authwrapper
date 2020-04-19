@@ -535,5 +535,7 @@ module.exports = {
       // 强制在 yield* 表达式中 * 周围使用空格
       "yield-star-spacing": 2,
       "jsdoc/require-param-description": 0,
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+
   }
 };

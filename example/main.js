@@ -1,12 +1,31 @@
 // 是项目的JS打包入口文件
 import React from 'react';
 import ReactDOM from 'react-dom';
-// 导入项目的根组件
-import App, { Button, Photo } from '../src/index.js';
+import AuthWrapper from '../src/index.js';
 
+function myValid() {
+  return true;
+}
+
+function getCodes() {
+  return ['123', '456'];
+}
 ReactDOM.render(
-  <App text="Hello react组件">
-    <Button>小按钮</Button>
-    <Photo src="https://avatars3.githubusercontent.com/u/18528507?s=40&v=4" />
-  </App>, document.getElementById('app')
+  <React.Fragment>
+    <AuthWrapper code="123" codes={['123', '456']}>
+      <div>This is React Nodes as Children</div>
+    </AuthWrapper>
+    <AuthWrapper code="1234" codes={['123', '456']}>
+      <div>No Auth</div>
+    </AuthWrapper>
+
+    <AuthWrapper code="1234" codes={getCodes()}>
+      <div>No Auth1</div>
+    </AuthWrapper>
+
+    <AuthWrapper valid={myValid}>
+      <div>No Auth function</div>
+    </AuthWrapper>
+  </React.Fragment>
+  , document.getElementById('app')
 );
