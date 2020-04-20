@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import permissionImg from './PermissionSvg';
+import CheckPermissions from './CheckPermissions';
 
 const __rest = (this && this.__rest) || function (s, e) {
   const t = {};
@@ -15,6 +16,15 @@ const __rest = (this && this.__rest) || function (s, e) {
   }
   return t;
 };
+
+function isPromise(obj) {
+  return (
+    !!obj &&
+    (typeof obj === 'object' || typeof obj === 'function') &&
+    typeof obj.then === 'function'
+  );
+}
+
 // ComposedComponent, codes = [], path = ''
 // 权限控制 AuthWrapper 可供任意组件权限控制
 // 无权限处理 隐藏 or forbiden or onclick func
@@ -28,7 +38,11 @@ const __rest = (this && this.__rest) || function (s, e) {
 class PermissionWrapper extends Component {
 
   static propTypes = {
-    code: PropTypes.string, // 按钮级的权限webKey
+    // code: PropTypes.string.isRequired, // 按钮级的权限webKey
+    code: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.array,
+    ]).isRequired, // 按钮级的权限webKey
     children: PropTypes.node.isRequired,
     image: PropTypes.oneOfType([
       PropTypes.string,
@@ -44,64 +58,28 @@ class PermissionWrapper extends Component {
     valid: PropTypes.func,
     codes: PropTypes.oneOfType([
       PropTypes.array,
+      PropTypes.string,
     ]),
+    noMatch: PropTypes.node,
   };
 
   static defaultProps = {
     description: '',
     image: false,
+    noMatch: null,
     className: '',
     prefixCls: 'yg-auth',
     valid: null,
-    code: '',
     codes: [],
   };
 
-  validAuth() {
-    // user: { userAllAuthRoleList }
-    const { valid, codes, code } = this.props;
-    if (valid) {return valid();}
-    // const codes = codes;// userAllAuthRoleList.code || []; // code 数据源返回
-
-    const hasAuth = !!code && code.length > 0 ? codes.includes(code) : true;
-    return hasAuth;
-  }
-
   render() {
-    const {className, children, description, image, prefixCls } = this.props;
-    const restProps = __rest(this.props, ['className', 'prefixCls', 'image', 'description', 'children']);
+    const {children, noMatch = null, code, codes, valid } = this.props;
+    // const restProps = __rest(this.props, ['className', 'prefixCls', 'image', 'description', 'children', 'noMatch']);
+    // code, codes, target, Exception, valid
+    const childrenRender = typeof children === 'undefined' ? null : children;
+    return code !== undefined ? CheckPermissions(code, codes, childrenRender, noMatch, valid) : null;
 
-    const hasAuth = this.validAuth();
-    if (hasAuth) {
-      return (
-        <React.Fragment>
-          {children}
-        </React.Fragment>
-      );// <ComposedComponent { ...others} />;
-    }
-    const des = description;
-    const alt = typeof des === 'string' ? des : '无权限';
-    let imageNode = null;
-    if (!image && image !== false) {
-      imageNode = <img alt={alt} src={permissionImg} />;
-    } else if (typeof image === 'string') {
-      imageNode = <img alt={alt} src={image} />;
-    } else if (image) {
-      imageNode = image;
-    }
-    let descNode = null;
-    if (typeof description === 'string') {
-      descNode = <p className={`${prefixCls}-description`}>{des}</p>;
-    } else if (description) {
-      descNode = description;
-    }
-
-    return (
-      <div className={classNames(prefixCls, className)} {...restProps}>
-        {imageNode && <div className={`${prefixCls}-image`}>{imageNode}</div>}
-        {descNode}
-      </div>
-    );
   }
 }
 
