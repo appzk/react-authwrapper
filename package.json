@@ -1,6 +1,6 @@
 {
   "name": "@ygyg/react-authwrapper",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "react auth wrapper",
   "main": "lib/index.js",
   "files": [
@@ -69,7 +69,6 @@
     "eslint-plugin-react": "^7.12.2",
     "husky": "^4.2.5",
     "lint-diff": "^1.2.1",
-    
     "css-loader": "^1.0.0",
     "cssnano": "^4.0.3",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
@@ -88,7 +87,6 @@
     "purifycss-webpack": "^0.7.0",
     "style-loader": "^0.21.0",
     "uglifyjs-webpack-plugin": "^1.2.7",
-
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "url-loader": "^0.6.2",
