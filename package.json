@@ -16,25 +16,35 @@
   "homepage": "https://github.com/appzk/react-authwrapper",
   "scripts": {
     "start": "npm run dev",
-    "dev1": "webpack-dev-server --config ./build/webpack.dev.config.js --open --port 3000 --hot",
-    "pub1": "webpack --config ./build/webpack.pub.config.js",
-    "pub": "webpack --mode production --config=build/build.js",
-    "dev": "webpack-dev-server --mode development --config=build/dev.js --open --hot",
+    "dev": "webpack-dev-server --config ./config/dev.js --open --hot",
+    "pub": "webpack  --mode production --config ./config/pub.js",
     "prepare": "npm run pub",
     "commit": "git-cz",
     "lint": "lint-diff --name-only ./src",
+    "now-build": "echo \"Hello\"",
     "release": "standard-version"
   },
   "config": {
     "commitizen": {
-      "path": "node_modules/cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint",
-      "commit-msg": "commitlint -e $GIT_PARAMS"
+      "pre-commit": "npm run now-build && lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-push": "echo 提交代码前需要先进行单元测试 && 可以做测试相关"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write",
+      "git add"
+    ]
   },
   "keywords": [
     "react",
@@ -62,22 +72,24 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "clean-webpack-plugin": "^0.1.17",
+    "css-loader": "^1.0.0",
+    "cssnano": "^4.0.3",
+    "cz-conventional-changelog": "^3.1.0",
     "eslint": "^5.11.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.1.2",
     "eslint-plugin-react": "^7.12.2",
-    "husky": "^4.2.5",
-    "lint-diff": "^1.2.1",
-    "css-loader": "^1.0.0",
-    "cssnano": "^4.0.3",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "html-withimg-loader": "^0.1.16",
+    "husky": "^4.2.5",
     "json-stable-stringify": "^1.0.1",
     "less": "^3.8.0",
     "less-loader": "^4.1.0",
+    "lint-diff": "^1.2.1",
+    "lint-staged": "^10.1.6",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
     "postcss-color-rgba-fallback": "^3.0.0",
     "postcss-flexibility": "^2.0.0",
@@ -86,9 +98,9 @@
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
     "style-loader": "^0.21.0",
-    "uglifyjs-webpack-plugin": "^1.2.7",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
+    "uglifyjs-webpack-plugin": "^1.2.7",
     "url-loader": "^0.6.2",
     "webpack": "^4.16.2",
     "webpack-cli": "^3.3.11",
