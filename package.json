@@ -1,6 +1,6 @@
 {
   "name": "@ygyg/react-authwrapper",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "react auth wrapper",
   "main": "lib/index.js",
   "files": [
@@ -31,7 +31,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run now-build && lint-staged",
+      "pre-commit": "npm run now-build",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "pre-push": "echo 提交代码前需要先进行单元测试 && 可以做测试相关"
     }
